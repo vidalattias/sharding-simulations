@@ -1,0 +1,20 @@
+{"scenarios": [
+    {
+      "duration":           200,
+      "width":              4,
+      "dissemination_rate": 0,
+      "lambda":             1000,
+      "shard_capacity":     20,
+      "period":             30
+    },
+
+    {
+      "duration":           200,
+      "width":              1,
+      "dissemination_rate": 0,
+      "lambda":             1000,
+      "shard_capacity":     5,
+      "period":             1
+    }
+  ]
+}
