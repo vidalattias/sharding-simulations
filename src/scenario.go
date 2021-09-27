@@ -22,7 +22,7 @@ type Scenario struct {
 }
 
 func import_scenarios() {
-	jsonFile, err := os.Open("../scenarios.json")
+	jsonFile, err := os.Open("scenarios.json")
 	if err != nil {
 		fmt.Println(err)
 	}

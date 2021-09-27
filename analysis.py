@@ -11,6 +11,7 @@ for l in file:
 plt.ylim([0,110])
 plt.plot(data)
 plt.title("Ratio of messages/(messages+proofs)")
+plt.savefig('figures/ratio.pdf')
 plt.show()
 
 
@@ -29,4 +30,5 @@ plt.plot(data, label="Messages only")
 plt.plot(data_total, label="Total throughput")
 plt.legend()
 plt.title("Messages per second")
+plt.savefig('figures/mps.pdf')
 plt.show()
