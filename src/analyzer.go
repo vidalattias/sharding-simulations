@@ -50,9 +50,9 @@ func (analyzer Analyzer) PrintTotalThroughput() {
 	//fmt.Println(references)
 	//fmt.Println(ratio)
 
-	write_file("../total_throughput.txt", total_string)
-	write_file("../messages.txt", messages_string)
-	write_file("../ratio.txt", ratio_string)
+	write_file("total_throughput.txt", total_string)
+	write_file("messages.txt", messages_string)
+	write_file("ratio.txt", ratio_string)
 }
 
 func (analyzer Analyzer) analyse_txs() {
@@ -80,5 +80,5 @@ func (analyzer Analyzer) analyse_txs() {
 
 	fmt.Println()
 
-	write_file("../txs.txt", ret_str.String())
+	write_file("txs.txt", ret_str.String())
 }
