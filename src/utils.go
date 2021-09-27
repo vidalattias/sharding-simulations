@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"math"
 	"math/rand"
+	"os"
 )
 
 var shard_counter uint = 0
@@ -79,4 +81,24 @@ func compareTime(a interface{}, b interface{}) int {
 		return 1
 	}
 	return 0
+}
+
+func write_file(name string, content string) {
+	f, err := os.Create(name)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	l, err := f.WriteString(content)
+	if err != nil {
+		fmt.Println(err)
+		f.Close()
+		return
+	}
+	fmt.Println(l, "bytes written successfully")
+	err = f.Close()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 }

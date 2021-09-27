@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"sort"
 	"strings"
 )
@@ -82,24 +81,4 @@ func (analyzer Analyzer) analyse_txs() {
 	fmt.Println()
 
 	write_file("../txs.txt", ret_str.String())
-}
-
-func write_file(name string, content string) {
-	f, err := os.Create(name)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	l, err := f.WriteString(content)
-	if err != nil {
-		fmt.Println(err)
-		f.Close()
-		return
-	}
-	fmt.Println(l, "bytes written successfully")
-	err = f.Close()
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
 }

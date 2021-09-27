@@ -18,6 +18,7 @@ type Scenario struct {
 	Lambda             float64 `json:"lambda"`
 	Shard_capacity     float64 `json:"shard_capacity"`
 	Period             float64 `json:"period"`
+	LeafModel          bool    `json:"leaf_model"`
 }
 
 func import_scenarios() {

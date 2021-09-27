@@ -8,9 +8,22 @@ import (
 	"gonum.org/v1/gonum/stat/distuv"
 )
 
+func reset_shards() {
+	for _, s := range g_shards {
+		s.is_issuing = false
+		s.is_stamping = false
+		s.capacity = g_shard_capacity
+		s.allocated = 0
+	}
+}
+
 func make_schedule() {
+	// g_available_throughput is only updated in new_shard()
+	g_available_throughput = g_shard_capacity
 	for g_available_throughput < g_lambda {
+		fmt.Println("test -> ", g_available_throughput)
 		new_shard()
+		fmt.Println("test -> ", g_available_throughput, "\n")
 	}
 
 	g_active_shards = []*Shard{}
@@ -27,10 +40,34 @@ func make_schedule() {
 
 		allocated -= current.allocated
 
+		fmt.Println(current.id, " ", current.allocated)
+
 		g_active_shards = append(g_active_shards, current)
 
 		for _, child := range current.childs {
-			queue = append(queue, child)
+			if child.cardinal <= int(g_width) {
+				queue = append(queue, child)
+			}
+		}
+	}
+
+	for _, s := range g_shards {
+		if s.allocated > 0 {
+			s.is_stamping = true
+			if g_leaf_model {
+				cnt := 0
+
+				for _, c := range s.childs {
+					if c.allocated > 0 {
+						cnt++
+					}
+				}
+				if cnt == 0 {
+					s.is_issuing = true
+				}
+			} else {
+				s.is_issuing = true
+			}
 		}
 	}
 }
@@ -45,21 +82,16 @@ func new_shard() {
 
 		if len(current.childs) < int(g_width) {
 			var new_shard *Shard = &Shard{
-				id:                  new_shard_id(),
-				childs:              []*Shard{},
-				parent:              current,
-				participating_nodes: []*Shard{},
-				dissemination_rate:  g_dissemination_rate,
-				transactions:        []*Transaction{},
-				referencer:          &Shard{},
-				next_reference:      g_period,
-				to_validate:         &alavl.Tree{},
-				capacity:            g_shard_capacity,
-				allocated:           0,
-				proofs_to_process:   []*Transaction{},
-				depth:               current.depth + 1,
-				valid:               false,
+				id:                 new_shard_id(),
+				parent:             current,
+				dissemination_rate: g_dissemination_rate,
+				next_reference:     g_period,
+				capacity:           g_shard_capacity,
+				depth:              current.depth + 1,
+				cardinal:           len(current.childs) + 1,
 			}
+
+			fmt.Println("\tlast = ", new_shard.id)
 
 			new_shard.to_validate = alavl.New(compareTx, alavl.AllowDuplicates)
 
