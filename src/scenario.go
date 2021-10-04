@@ -15,7 +15,7 @@ type Scenario struct {
 	Duration           float64 `json:"duration"`
 	Width              uint    `json:"width"`
 	Dissemination_rate float64 `json:"dissemination_rate"`
-	Lambda             float64 `json:"lambda"`
+	Depth              uint    `json:"depth"`
 	Shard_capacity     float64 `json:"shard_capacity"`
 	Period             float64 `json:"period"`
 	LeafModel          bool    `json:"leaf_model"`
@@ -30,6 +30,4 @@ func import_scenarios() {
 	defer jsonFile.Close()
 	byteValue, _ := ioutil.ReadAll(jsonFile)
 	json.Unmarshal(byteValue, &g_scenario)
-
-	fmt.Println(g_scenario)
 }

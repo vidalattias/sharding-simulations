@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-file = open("ratio.txt")
+file = open("data/ratio.txt")
 
 data = []
 
@@ -15,12 +15,12 @@ plt.savefig('figures/ratio.pdf')
 plt.show()
 
 
-file = open("messages.txt")
+file = open("data/messages.txt")
 data = []
 for l in file:
     data.append(int(l))
 
-file = open("total_throughput.txt")
+file = open("data/total_throughput.txt")
 data_total = []
 for l in file:
     data_total.append(int(l))

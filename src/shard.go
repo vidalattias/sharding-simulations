@@ -16,14 +16,12 @@ type Shard struct {
 	referencer          *Shard
 	next_reference      float64
 	to_validate         *alavl.Tree
+	to_validate_slice   []*Transaction
 	capacity            float64
-	allocated           float64
 	proofs_to_process   []*Transaction
 	depth               uint
 	is_issuing          bool
-	is_stamping         bool
 	active_childs       int
-	cardinal            int
 }
 
 func print_shard(s *Shard, depth uint) {
@@ -45,20 +43,16 @@ func print_network(id int) {
 
 	ret_str += "}"
 
-	write_file(fmt.Sprintf("scenario_%d.dot", id), ret_str)
+	write_file(fmt.Sprintf("data/scenario_%d.dot", id), ret_str)
 }
 
 func (s Shard) print_shard() string {
 	ret_str := ""
 
-	fmt.Println(s.id, " ", s.allocated)
-
 	if s.is_issuing {
-		ret_str = fmt.Sprintf("%d[color=lightgreen style=filled label=\"%d\\n%d\"]", s.id, s.id, int(s.allocated))
-	} else if s.is_stamping {
-		ret_str = fmt.Sprintf("%d[color=yellow style=filled label=\"%d\\n%d\"]", s.id, s.id, int(s.allocated))
+		ret_str = fmt.Sprintf("%d[color=lightgreen style=filled label=\"%d\\n%d\"]", s.id, s.depth, int(s.capacity))
 	} else {
-		ret_str = fmt.Sprintf("%d[color=red style=filled label=\"%d\\n%d\"]", s.id, s.id, int(s.allocated))
+		ret_str = fmt.Sprintf("%d[color=yellow style=filled label=\"%d\\n%d\"]", s.id, s.depth, int(s.capacity))
 	}
 
 	for _, c := range s.childs {

@@ -7,4 +7,6 @@ type Transaction struct {
 	time_validated float64
 	is_proof       bool
 	validator      *Transaction
+	scenario       uint
+	time_seen      float64
 }

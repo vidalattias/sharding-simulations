@@ -33,14 +33,8 @@ func random_delay() float64 {
 
 func pick_proof(s *Shard, time float64) *Transaction {
 	for i, tx := range s.proofs_to_process {
-		if tx.timestamp+s.dissemination_rate < time {
+		if tx.time_seen <= time {
 			s.proofs_to_process = append(s.proofs_to_process[:i], s.proofs_to_process[i+1:]...)
-
-			/*
-				for _, c := range tx.tx_validated {
-					validate_cone(c, time)
-				}
-			*/
 
 			return tx
 		}

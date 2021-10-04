@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-f = open("txs.txt")
+f = open("data/txs_0.txt")
 
 depths = {}
 depths_time = {}
@@ -36,6 +36,8 @@ plt.boxplot(values, positions = pos)
 plt.ylabel("Validation time of messages (unit of time)")
 plt.xlabel("Depth of tangle")
 
+plt.savefig("figures/validations.pdf")
+
 plt.show()
 
 
@@ -51,5 +53,5 @@ for i in depths_time:
 
     plt.plot(x, y, label="Depth "+str(i))
 plt.legend()
-
+plt.savefig("figures/validations_multiple.pdf")
 plt.show()

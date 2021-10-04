@@ -27,11 +27,7 @@ func (analyzer Analyzer) PrintTotalThroughput() {
 	var messages_string = ""
 	var total_string = ""
 
-	fmt.Println("Keys : ", keys)
-
 	sort.Ints(keys)
-
-	fmt.Println("Keys : ", keys)
 
 	for _, k := range keys {
 
@@ -46,39 +42,26 @@ func (analyzer Analyzer) PrintTotalThroughput() {
 
 	}
 
-	//fmt.Println(messages)
-	//fmt.Println(references)
-	//fmt.Println(ratio)
-
-	write_file("total_throughput.txt", total_string)
-	write_file("messages.txt", messages_string)
-	write_file("ratio.txt", ratio_string)
+	write_file("data/messages.txt", messages_string)
+	write_file("data/total_throughput.txt", total_string)
+	write_file("data/ratio.txt", ratio_string)
 }
 
-func (analyzer Analyzer) analyse_txs() {
-
+func (analyzer Analyzer) analyse_txs(i int) {
 	var ret_str strings.Builder
 
-	ratio_pre := 0.
-
-	fmt.Printf("")
-
-	for i, tx := range g_transactions {
-		ratio := float64(i) / float64(len(g_transactions))
-
-		if ratio-ratio_pre > 0.001 {
-			ratio_pre = ratio
-			fmt.Printf("\r%f", ratio)
-		}
+	for _, tx := range g_transactions {
 
 		val_time := get_validation_time(tx, 1)
 
 		if val_time != -1 {
-			ret_str.WriteString(fmt.Sprintf("%f;%f;%d;%t\n", tx.timestamp, val_time-tx.timestamp, tx.issuer.depth, tx.is_proof))
+			ret_str.WriteString(fmt.Sprintf("%d;%f;%f;%d;%t\n", tx.id, tx.timestamp, val_time-tx.timestamp, tx.issuer.depth, tx.is_proof))
+		} else {
+			ret_str.WriteString(fmt.Sprintf("%d;%f;NULL;%d;%t\n", tx.id, tx.timestamp, tx.issuer.depth, tx.is_proof))
 		}
 	}
 
 	fmt.Println()
 
-	write_file("txs.txt", ret_str.String())
+	write_file(fmt.Sprintf("data/txs_%d.txt", i), ret_str.String())
 }
